@@ -74,3 +74,40 @@ n	words	result
 */
 
 // 해결방법
+
+function solution(n, words) {
+  let answer = [];
+  let count = 1;
+
+  for (let i = 0; i < words.length; i++) {
+    // 효율성 검증을 위해 조건을 세분화하여 일치하지 않는다면 바로 종료시킨다.
+    // 단어의 길이가 1인 경우.
+    if (words[i].length < 2) {
+      break;
+    }
+    //중복된 단어의 경우.
+    if (words.slice(0, i).includes(words[i])) {
+      break;
+    }
+    //이전 단어의 맨 뒤 글자와 그 다음 단어의 첫 글자가 맞지 않는 경우.
+    if (i < words.length - 1) {
+      if (words[i][words[i].length - 1] != words[i + 1][0]) {
+        count++;
+        break;
+      }
+    }
+    count++;
+  }
+
+  // 모든 if문을 통과하면 탈락자가 없는 끝말잇기 이므로 [0, 0] 리턴.
+  if (count > words.length) {
+    answer = [0, 0];
+  } else {
+    // answer[0] 는 실수한 사람의 번호(이름).
+    // answer[1] 는 몇 번째 사이클에서 실패했는지.
+    answer[0] = count % n == 0 ? n : count % n;
+    answer[1] = Math.ceil(count / n);
+  }
+
+  return answer;
+}
